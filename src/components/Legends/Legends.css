@@ -1,0 +1,41 @@
+.legends{
+    color: white;
+    display: flex;
+    font-size: 1.2em;
+    justify-content: space-between;
+    margin: 50px auto;
+    max-width: 600px;
+    padding: 0 10px;
+}
+
+.key{
+    align-items: center;
+    display: flex;
+}
+
+
+.sq{
+    display: inline-block;
+    height: 20px;
+    margin: 0 10px;
+    width: 20px;
+}
+
+.compare{
+    background-color: #ffff50;
+}
+
+.swap {
+    background-color: red;
+}
+
+.sorted{
+    background-color: #4bc52e;
+}
+
+@media(max-width: 564px){
+    .legends{
+        font-size: 0.8em;
+        text-align: center;
+    }
+}
