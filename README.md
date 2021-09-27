@@ -1,70 +1,116 @@
-# Getting Started with Create React App
+# Sorting Algo Visualizer
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Project Link https://sortingalgo-visualizer.web.app/
 
-## Available Scripts
+```
+Project Structure
+Src-
+    Algorithms-
+               |-BubbleSort
+               |-Selection Sort
+               |-insertion Sort
+               |-Merge Sort
+               |-Quick Sort
+    App-
+        |-NavBar
+        |-ListBlocks
+        |-Legends
+```
 
-In the project directory, you can run:
+## Thnigs you should know before getting started
 
-### `yarn start`
+<p>Every sorting Algortihm have an <b>Order Array</b> Which is responsible for things Like </p>
+<ul>
+  <li>Comparision</li>
+  <li>Swapping</li>
+  <li>Updating the Array</li>
+  </ul>
+  
+  
+ ### As you can see we are returing an order array in this bubble sort Algorithm after adding certain data in it . We need this data so that we can update  our state and visualize the algorithm..
+ ```
+ const swap=(arr,i,j)=>{
+    const temp=arr[i]
+     arr[i]=arr[j]
+     arr[j]=temp
+}
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+const bubbleSort=(blocks)=>{
+    const dupBlock=blocks.slice(); //copying blocks arrays
+    const order=[]
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+    let i,j
 
-### `yarn test`
+    for(i=0;i<dupBlock.length;i++){
+        for(j=0;j<dupBlock.length-i-1;j++){ //as in bubble sort in each parse greater element comes at last..
+            
+            order.push([j,j+1,null,null])  //comp
+            if (dupBlock[j]>dupBlock[j+1]) {
+                swap(dupBlock,j,j+1)
+                order.push([j,j+1,dupBlock.slice(),null]) //swap
+            }
+        }
+        //after completeing one parse our greater element comes in last
+        order.push([null,null,null,j]) // j-th element is in correct position ( Sorted )
+    }
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+    return order
+}
 
-### `yarn build`
+export default bubbleSort
+ ```
+ 
+ 
+ ## This is an important function you have to understand it whats going on as it is responsible for most of the things
+ ```
+ //sorting according to the algorithm
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+  const handleSort = () => {
+    const sortAccOrder = (order) => {
+      (function loop(i) {
+        setTimeout(function () {
+          //array destructuring
+          const [j, k, arr, index] = order[i];
+          setCompare([j, k]);
+          setSwap([]);
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+          if (index !== null) {
+            //adding index of already sorted elements in  array
+            setSortedIndex((prevState) => [...prevState, index]);
+          }
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+          if (arr) {
+            setBlocks(arr);
+            if (j != null || k != null) {
+              setSwap([j, k]);
+            }
+          }
 
-### `yarn eject`
+          if (++i < order.length) {
+            loop(i);
+          } else {
+            setSorting(false);
+            setCompleted(true);
+          }
+        }, speed);
+      })(0);
+    };
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+    setSorting(true);
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+    algo === "bubbleSort"
+      ? sortAccOrder(bubbleSort(blocks))
+      : algo === "insertionSort"
+      ? sortAccOrder(insertionSort(blocks))
+      : algo === "selectionSort"
+      ? sortAccOrder(selectionSort(blocks))
+      : algo === "mergeSort"
+      ? sortAccOrder(mergeSort(blocks))
+      : algo === "quickSort"
+      ? sortAccOrder(quickSort(blocks))
+      : (() => {
+          setSorting(false);
+          setCompleted(true);
+        })();
+  };
+ ```
